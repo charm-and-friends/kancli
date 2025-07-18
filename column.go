@@ -69,8 +69,13 @@ func (c column) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, keys.Delete):
 			return c, c.DeleteCurrent()
 		case key.Matches(msg, keys.Enter):
-			return c, c.MoveToNext()
+			return c, c.Move("next")
+		case key.Matches(msg, keys.ItemRight):
+			return c, c.Move("next")
+		case key.Matches(msg, keys.ItemLeft):
+			return c, c.Move("prev")
 		}
+
 	}
 	c.list, cmd = c.list.Update(msg)
 	return c, cmd
@@ -119,9 +124,10 @@ func (c *column) getStyle() lipgloss.Style {
 
 type moveMsg struct {
 	Task
+	direction string
 }
 
-func (c *column) MoveToNext() tea.Cmd {
+func (c *column) Move(direction string) tea.Cmd {
 	var task Task
 	var ok bool
 	// If nothing is selected, the SelectedItem will return Nil.
@@ -130,11 +136,17 @@ func (c *column) MoveToNext() tea.Cmd {
 	}
 	// move item
 	c.list.RemoveItem(c.list.Index())
-	task.status = c.status.getNext()
+
+	switch direction {
+	case "prev":
+		task.status = c.status.getPrev()
+	case "next":
+		task.status = c.status.getNext()
+	}
 
 	// refresh list
 	var cmd tea.Cmd
 	c.list, cmd = c.list.Update(nil)
 
-	return tea.Sequence(cmd, func() tea.Msg { return moveMsg{task} })
+	return tea.Sequence(cmd, func() tea.Msg { return moveMsg{task, direction} })
 }

@@ -42,7 +42,12 @@ func (m *Board) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case Form:
 		return m, m.cols[m.focused].Set(msg.index, msg.CreateTask())
 	case moveMsg:
-		return m, m.cols[m.focused.getNext()].Set(APPEND, msg.Task)
+		switch msg.direction {
+		case "prev":
+			return m, m.cols[m.focused.getPrev()].Set(APPEND, msg.Task)
+		case "next":
+			return m, m.cols[m.focused.getNext()].Set(APPEND, msg.Task)
+		}
 	case tea.KeyMsg:
 		switch {
 		case key.Matches(msg, keys.Quit):

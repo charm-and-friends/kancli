@@ -13,22 +13,25 @@ func (k keyMap) ShortHelp() []key.Binding {
 func (k keyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
 		{k.Up, k.Down, k.Left, k.Right}, // first column
-		{k.Help, k.Quit},                // second column
+		{k.ItemLeft, k.ItemRight},       // second column
+		{k.Help, k.Quit},                // third column
 	}
 }
 
 type keyMap struct {
-	New    key.Binding
-	Edit   key.Binding
-	Delete key.Binding
-	Up     key.Binding
-	Down   key.Binding
-	Right  key.Binding
-	Left   key.Binding
-	Enter  key.Binding
-	Help   key.Binding
-	Quit   key.Binding
-	Back   key.Binding
+	New       key.Binding
+	Edit      key.Binding
+	Delete    key.Binding
+	Up        key.Binding
+	Down      key.Binding
+	Right     key.Binding
+	Left      key.Binding
+	Enter     key.Binding
+	Help      key.Binding
+	Quit      key.Binding
+	Back      key.Binding
+	ItemLeft  key.Binding
+	ItemRight key.Binding
 }
 
 var keys = keyMap{
@@ -63,6 +66,14 @@ var keys = keyMap{
 	Enter: key.NewBinding(
 		key.WithKeys("enter"),
 		key.WithHelp("enter", "enter"),
+	),
+	ItemLeft: key.NewBinding(
+		key.WithKeys("ctrl+left", "ctrl+h"),
+		key.WithHelp("ctrl+←/ctrl+h", "move item left"),
+	),
+	ItemRight: key.NewBinding(
+		key.WithKeys("ctrl+right", "ctrl+l"),
+		key.WithHelp("ctrl+→/ctrl+l", "move item right"),
 	),
 	Help: key.NewBinding(
 		key.WithKeys("?"),
