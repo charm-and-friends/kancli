@@ -48,6 +48,8 @@ func (m *Board) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, keys.Quit):
 			m.quitting = true
 			return m, tea.Quit
+		case key.Matches(msg, keys.Help):
+			board.help.ShowAll = !board.help.ShowAll
 		case key.Matches(msg, keys.Left):
 			m.cols[m.focused].Blur()
 			m.focused = m.focused.getPrev()
