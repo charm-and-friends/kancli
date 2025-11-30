@@ -76,7 +76,7 @@ func (m *Board) View() string {
 		return "loading..."
 	}
 	board := lipgloss.JoinHorizontal(
-		lipgloss.Left,
+		lipgloss.Top,
 		m.cols[todo].View(),
 		m.cols[inProgress].View(),
 		m.cols[done].View(),
